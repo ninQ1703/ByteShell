@@ -7,12 +7,10 @@ char* strAppend(char* str1, char* str2){
 
     if(str1 == ""){
         strcpy(str4, str2);
-        // printf("%s", str4);
         return str4;
     }
     strcpy(str3, str1);
     strcpy(str4, str2);
-    // printf("%s", str4);
     strcat(str3, str4);
     return str3;
 }

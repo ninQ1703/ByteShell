@@ -10,7 +10,7 @@ int launch(char **args){
     pid = fork();
     if(pid == 0){
         if(execvp(args[0], args) == -1){
-            perror("ByteShellkk");
+            perror("ByteShell");
         }
         exit(EXIT_FAILURE);
     }else{

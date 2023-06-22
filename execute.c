@@ -4,8 +4,8 @@
 #include "launch.c"
 #include "history.c"
 #include "exits.c"
-#include "alias.c"
 #include "help.c"
+// #include "alias.c"
 #include <string.h>
 
 typedef int (*BuiltinFunction)(char**);
@@ -22,8 +22,6 @@ int execute(char **args){
         return 1;
     }
     int i;
-    int aliased = executeCommand(args[0]);
-    if(aliased) return 1;
     
     for(i = 0; i < 5 ; i++){
         if(strcmp(args[0], builtins[i]) == 0){

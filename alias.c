@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "Append.c"
 
 #define MAX_ALIAS_LENGTH 100
 #define MAX_COMMAND_LENGTH 200
@@ -23,42 +24,37 @@ void addAlias(const char* alias, const char* command) {
     strcpy(aliases[numAliases].command, command);
     numAliases++;
 
-    printf("Alias '%s' added. for %s\n", alias, command);
+    printf("Alias '%s' added for %s\n", alias, command);
 }
 
 
 int alias(char** args){
-    // printf("%s",args[0]);
     if(args[1] == NULL || args[2] == NULL ||args[3] == NULL){
         printf("Invalid Command");
         return 1;
     }
     int len = 0;
+    char* old_name = "", *str1 = " ";
     int i = 3;
-    while(args[i] != NULL){
-        len = len + strlen(args[i]);
-        i++;
-    }
-    char* old_name = "";
-    i = 3;
-    while(args[i] != NULL){
+    while(args[i+1] != NULL){
         old_name = strAppend(old_name, args[i]);
-        // printf("%s \n", old_name);
+        old_name = strAppend(old_name,str1);
         i++;
     }
-    if(strcmp(args[1], "add") == 0) addAlias(args[2], old_name);
+    old_name = strAppend(old_name, args[i]);
+    if(strcmp(args[1], "add") == 0){
+        addAlias(args[2], old_name);
+    }
     return 1;
 }
 
-int executeCommand(const char* command) {
+char* getCommand(char* command) {
     int i;
     for (i = 0; i < numAliases; i++) {
         if (strcmp(aliases[i].alias, command) == 0) {
-            printf("Executing command: %s\n", aliases[i].command);
-            system(aliases[i].command);
-            return 1;
+            return aliases[i].command;
         }
     }
 
-    return 0;
+    return command;
 }

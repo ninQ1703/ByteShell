@@ -1,6 +1,8 @@
 #include<stdio.h>
 #include <stdlib.h>
 
+const int BUF_SIZE = 1024;
+
 char* read_line(){
     int bufsize = 1024;
     int position = 0;
@@ -22,7 +24,7 @@ char* read_line(){
             position++;
         }
         if (position >= bufsize){
-            bufsize += bufsize; //doubtful
+            bufsize += BUF_SIZE; 
             buffer = realloc(buffer, bufsize);
         }
         if (!buffer){

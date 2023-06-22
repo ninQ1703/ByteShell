@@ -10,9 +10,8 @@ void loop(){
     do{
         printf(">");
         line = read_line();
-        // printf("%s", line);
         args = split_line(line);
-        // add_to_hist(args);
+        add_to_hist(args);
         status = execute(args);
     }while (status);
     
