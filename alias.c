@@ -3,26 +3,36 @@
 #include <string.h>
 #include "Append.c"
 
-#define MAX_ALIAS_LENGTH 100
-#define MAX_COMMAND_LENGTH 200
+struct Alias{
+    char* alias;
+    char* command;
+    struct Alias* next;
+    
+};
 
-typedef struct {
-    char alias[MAX_ALIAS_LENGTH];
-    char command[MAX_COMMAND_LENGTH];
-} Alias;
-
-Alias aliases[10]; // Array to hold aliases (up to 10 aliases)
-int numAliases = 0; // Number of currently defined aliases
+struct Alias* alias_head = NULL;
+struct Alias* alias_cur = NULL;
 
 void addAlias(const char* alias, const char* command) {
-    if (numAliases >= 10) {
-        printf("Maximum number of aliases reached.\n");
-        return;
-    }
 
-    strcpy(aliases[numAliases].alias, alias);
-    strcpy(aliases[numAliases].command, command);
-    numAliases++;
+    if(alias_head == NULL){
+        alias_head = (struct Alias *)malloc(sizeof(struct Alias));
+        alias_head->alias = (char *)malloc(sizeof(char*)*strlen(alias));
+        alias_head->command = (char *)malloc(sizeof(char*)*strlen(command));
+        strcpy(alias_head->alias, alias);
+        strcpy(alias_head->command, command);
+        alias_head->next = NULL;
+        alias_cur = alias_head;
+    }else{
+        struct Alias *ptr = (struct Alias *)malloc(sizeof(struct Alias));
+        alias_cur->next = ptr;
+        ptr->alias = (char *)malloc(sizeof(char*)*strlen(alias));
+        ptr->command = (char *)malloc(sizeof(char*)*strlen(command));
+        strcpy(ptr->alias, alias);
+        strcpy(ptr->command, command);
+        ptr->next = NULL;
+        alias_cur = ptr;
+    }
 
     printf("Alias '%s' added for %s\n", alias, command);
 }
@@ -37,11 +47,18 @@ int alias(char** args){
     char* old_name = "", *str1 = " ";
     int i = 3;
     while(args[i+1] != NULL){
-        old_name = strAppend(old_name, args[i]);
-        old_name = strAppend(old_name,str1);
+        len = len + strlen(args[i]);
         i++;
     }
-    old_name = strAppend(old_name, args[i]);
+    len = len + strlen(args[i]);
+    i = 3;
+    old_name = (char*)malloc(sizeof(char*)*len);
+    while(args[i+1] != NULL){
+        strcpy(old_name,strAppend(old_name, args[i]));
+        strcpy(old_name, strAppend(old_name,str1));
+        i++;
+    }
+    strcpy(old_name,strAppend(old_name, args[i]));
     if(strcmp(args[1], "add") == 0){
         addAlias(args[2], old_name);
     }
@@ -49,12 +66,14 @@ int alias(char** args){
 }
 
 char* getCommand(char* command) {
-    int i;
-    for (i = 0; i < numAliases; i++) {
-        if (strcmp(aliases[i].alias, command) == 0) {
-            return aliases[i].command;
-        }
-    }
 
+    struct Alias* ptr = alias_head;
+    while(ptr != NULL){
+        if (strcmp(ptr->alias, command) == 0) {
+            return ptr->command;
+        }
+        ptr = ptr->next;
+    }
     return command;
+
 }

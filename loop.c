@@ -8,7 +8,7 @@ void loop(){
     int status;
 
     do{
-        printf(">");
+        printf("nikki/Byteshell$ ");
         line = read_line();
         args = split_line(line);
         add_to_hist(args);
