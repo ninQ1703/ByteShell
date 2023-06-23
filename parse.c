@@ -3,9 +3,11 @@
 #include <string.h>
 #include "command_alias.c"
 
+const char LEN = 1024;
+
 char** split_line(char *line){
-    int bufsize = 1024, position = 0;
-    char **tokens = malloc(bufsize * sizeof(char*));
+    int len = 1024, position = 0;
+    char **tokens = malloc(len * sizeof(char*));
     char *token = strtok(line, " ");
     char *expLine = "";
     char *fromAlias, *str = " ";
@@ -13,6 +15,8 @@ char** split_line(char *line){
         fprintf(stderr, "allocation error\n");
         exit(EXIT_FAILURE);
     }
+
+    // get aliased commands
     while(token != NULL){
         fromAlias = getCommand(token);
         expLine = strAppend(expLine, fromAlias);        
@@ -20,12 +24,14 @@ char** split_line(char *line){
         token = strtok(NULL, " ");
     }
     token = strtok(expLine, " ");
+
+    //get tokens fron command
     while(token != NULL){
         tokens[position] = token;
         position++;
-        if(position >= bufsize){
-            bufsize += bufsize;
-            tokens = realloc(tokens, bufsize * sizeof(char *));
+        if(position >= len){
+            len += LEN;
+            tokens = realloc(tokens, len * sizeof(char *));
             if(!tokens){
                 fprintf(stderr, "Allocation error\n");
                 exit(EXIT_FAILURE);

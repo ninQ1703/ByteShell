@@ -1,33 +1,31 @@
 #include<stdio.h>
 #include <stdlib.h>
 
-const int BUF_SIZE = 1024;
+const int LEN = 1024;
 
 char* read_line(){
-    int bufsize = 1024;
+    int len = 1024;
     int position = 0;
-    char *buffer = malloc(sizeof(char) *bufsize);
+    char *line = malloc(sizeof(char) *len);
     int c;
 
-    if(!buffer){
-        fprintf(stderr, "Allocation error");
-        exit(EXIT_FAILURE);
-    }
+    // take characters unless enter is pressed and store in line
     while (1){
         c = getchar();
+
         if (c == '\n' ){
-            buffer[position] = '\0';
-            return buffer; 
+            line[position] = '\0';
+            return line; 
         }
         else{
-            buffer[position] = c;
+            line[position] = c;
             position++;
         }
-        if (position >= bufsize){
-            bufsize += BUF_SIZE; 
-            buffer = realloc(buffer, bufsize);
+        if (position >= len){
+            len += LEN; 
+            line = realloc(line, len);
         }
-        if (!buffer){
+        if (!line){
             fprintf(stderr, "allocation error\n");
             exit(EXIT_FAILURE); 
         }
