@@ -2,7 +2,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-char* builtins[] = {"cd", "hist", "help", "exit", "alias"};
+char* builtins[] = {"cd", "hist", "help", "exit", "alias", "unalias"};
 
 int help(char **args)
 {

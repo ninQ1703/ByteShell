@@ -1,6 +1,6 @@
 #include <string.h>
 
-char* strAppend(char* str1, char* str2){
+char* strAppend(const char* str1, const char* str2){
     
     char* str3 = (char*)malloc(sizeof(char*)*(strlen(str1) + strlen(str2)));
     char* str4 = (char*)malloc(sizeof(char*)*strlen(str2));

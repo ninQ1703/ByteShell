@@ -21,20 +21,15 @@ int display_history(char **args){
     return 1;
 }
 
-void add_to_hist(char **args){
-    if(args[0] == NULL) return;
-    char* str1 = " ";
-    int i = 0;
-    char* command = "";
-    while(args[i+1] != NULL){
-        command =  strAppend(command,args[i]);
-        command = strAppend(command,str1);
-        i++;
-    }
-    command = strAppend(command,args[i]);
+void add_to_hist(const char *command){
+    char* temp = (char *)malloc(strlen(command));
+    strcpy(temp, command);
+    char* temp_token = strtok(temp, " ");
+    if(temp_token == NULL) return;
+    
     if(head == NULL){
         head = (struct Node *)malloc(sizeof(struct Node));
-        head->str = (char *)malloc(0x1000);
+        head->str = (char *)malloc(strlen(command));
         strcpy(head->str, command);
         head->next = NULL;
         cur = head;
@@ -46,5 +41,4 @@ void add_to_hist(char **args){
         ptr->next = NULL;
         cur = ptr;
     }
-    
 }
